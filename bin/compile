@@ -20,25 +20,28 @@ source $bp_dir/bin/common.sh
 
 mkdir -p $vendor_dir
 
-status "Installing java."
+status "Extracting JRE."
 cp $JRE_ARHIVE_FILE $vendor_dir
 pushd $vendor_dir
-  tar -xzvf ./$JRE_ARHIVE
+  tar -xzf ./$JRE_ARHIVE
   rm $JRE_ARHIVE
-  JRE_DIR=$vendor_dir/$(ls -l | tr " " "\n" | grep jre)
-  status "JRE_DIR=$JRE_DIR"
+  JRE_NAME=$(ls -l | tr " " "\n" | grep jre)
+  JRE_DIR=$vendor_dir/$JRE_NAME
+  status "Moving $JRE_NAME to target folder."
   mv $JRE_DIR jre
 popd
 
-status "Repack jenkins.war"
+status "Repacking jenkins.war."
 pushd $build_dir
   zip -q -r jenkins.war * -x "vendor/*"
 popd
 
 # Update the PATH
-status "Building runtime environment"
+status "Building runtime environment."
 # see this script
 # https://github.com/cloudfoundry/dea_ng/blob/e39ad94e5ea71c33ce91333803a1a956d652a738/lib/dea/starting/startup_script_generator.rb
 mkdir -p $build_dir/.profile.d
 # $HOME is set here https://github.com/cloudfoundry/dea_ng/blob/c2217e5fbcb866c9f4b6fd248b39138a83cbb479/lib/dea/starting/env.rb#L15
 echo "export PATH=\"\$HOME/vendor/jre/bin:\$HOME/bin:\$PATH\";" > $build_dir/.profile.d/jre.sh
+
+status "Done."
