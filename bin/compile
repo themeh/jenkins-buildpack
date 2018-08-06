@@ -9,7 +9,7 @@ cache_dir=$2
 bp_dir=$(cd $(dirname $0); cd ..; pwd)
 vendor_dir=$build_dir/vendor
 # JRE_ARHIVE=jre-8u102-ea-bin-b04-linux-x64-25_apr_2016.tar.gz
-JRE_ARHIVE=jre-10.0.2_linux-x64_bin.tar
+JRE_ARHIVE=jre-10.0.2_linux-x64_bin.tar.gz
 JRE_ARHIVE_FILE=$bp_dir/files/$JRE_ARHIVE
 
 # CF Common
